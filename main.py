@@ -8,87 +8,81 @@ import random
 
 cara = 47 * "-"
 
-#Generování tajných číslic
-def generuj_cislo():
-    tajne_cislo = range(1000, 10000)
-    unikatni_cislo = set(random.sample(tajne_cislo, 1))
-    return unikatni_cislo
 
-#vstup od uživatele
+# Generování tajných číslic
+def cislo_generator():
+    '''Generování náhodných čísel pro hru bez 0 na začátku a opakujících čísel'''
+    gen_cislo = [0]
+    while gen_cislo[0] == 0:
+        gen_cislo = random.sample(range(0, 10), 4)
+    return ("".join(map(str, gen_cislo)))
 
-def kontrola_vstupu(cisla: str):
-    '''Kontroluje čísla ze vstupu od uživatele.
-    Číslo musí být jen číslo a zároveň se hodnoty ve str
-    nesmějí opakovat'''
 
-    zkontrolovany_vstup = []
-    for i in cisla:
-        if i not in zkontrolovany_vstup:
-            if i.isdigit() == True:
-                var = len(zkontrolovany_vstup) > 4
-                zkontrolovany_vstup.append(i)
-                if var is False:
-                    print("Zadej 4 čísla.")
-            else:
-                print("Zadej jen čísla!")
+# vstup od uživatele
+def player_input():
+    '''Kontrola počtu zadaných čísel'''
+    while (True):
+        try:
+            global player_num
+            z = player_num = input("Enter a number:")
+            z = int(z[0])
+            '''Kontrola, zda číslo začíná 0'''
+            if z == 0:
+                print("Číslo nesmí začínat 0")
+                continue
+            '''Kontrola 4 zadaných čísel'''
+            if (len(player_num) != 4):
+                print("Vlož pouze 4 čísla!")
+                continue
+        except ValueError:
+            '''Kontrola zda obsahuje písmena'''
+            print("Vlož pouze číslice!")
         else:
-            print("Čísla se nemohou opakovat. Zadej jinou kombinaci.")
-    return zkontrolovany_vstup
+            x = 0
+            for i in range(0, 4):
+                x = x + player_num.count(player_num[i])
+            '''Kontrola, zda se číslo neopakuje'''
+            if (x != 4):
+                print("Vlož čísla, která se neopakují")
+                continue
+            else:
+                return
 
-def vstup_s_nulou(cisla: list):
-    '''Kontrolovaný vstup od uživatele nesmí začínat číslem: 0'''
-
-    if cisla[0] != "0":
-        pass
-    else:
-        print("Číslo nesmí začínat 0")
-
-def porovnavani(hrac,pocitac):
+def porovnavani(hrac, pocitac):
+    hrac = player_num
     bull_cow = [0, 0]
-    hrac_li = kontrola_vstupu(hrac)
-    for i,j in zip(hrac_li, pocitac):
-        if j in hrac_li:
+    for i, j in zip(hrac, pocitac):
+        if j in hrac:
             if j == i:
                 bull_cow[0] += 1
             else:
                 bull_cow[1] += 1
     return bull_cow
 
-#Hrajeme
-def hrajeme(hrac, pocitac):
-    while hrac == pocitac:
-        bull_cow = porovnavani(hrac, pocitac)
-        print(f"{bull_cow[0]} bulls, {bull_cow[1]} cows")
-        if bull_cow[0] == 4:
-            print("You guessed right!")
-
-#porovnávání čísel
-#Vyhodnocení
-#Vyhrál x prohrál
-#Hra začíná - hlavní funkce
-def main():
-    print(
-    "Hi there!",("\n"),
-    cara,("\n"),
-    "I've generated a random 4 digit number for you.",("\n"),
-    "Let's play a bulls and cows game.",("\n"),
+# Hra začíná - hlavní funkce
+print(
+    "Hi there!", ("\n"),
+    cara, ("\n"),
+    "I've generated a random 4 digit number for you.", ("\n"),
+    "Let's play a bulls and cows game.", ("\n"),
     cara)
-    hrac = input("Zadej 4 čísla:")
-    pocitac = generuj_cislo()
 
-    while hrac != pocitac:
-        dalsi_moznost = input(">>>")
-        porovnavani(dalsi_moznost, pocitac)
-        hrajeme(hrac, pocitac)
-        print(f"{dalsi_moznost[0]} bulls, {dalsi_moznost[1]} cows")
-        if hrac == pocitac:
-            print("Vyhrál si!")
+player_num = str(0)
+user_choice = True
+while (user_choice):
+    cow_count = 0
+    bull_count = 0
+    game_num = generuj_cislo()
+    print(game_num)
 
-
-
-main()
-
-
-
-
-
+    while (True):
+        kontrola_vstupu()
+        porovnavani(game_num, player_num)
+        if (bull_count == 4):
+            print("YOU WON")
+            print("YOU HAVE COMPLETED THE GAME")
+        else:
+            print("cow_count", cow_count)
+            print("bull_count", bull_count)
+            cow_count = 0
+            bull_count = 0
