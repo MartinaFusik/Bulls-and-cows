@@ -92,7 +92,7 @@ while (user_choice):
                 user_choice = False
             break
         else:
-            print("cow_count", cow_count)
-            print("bull_count", bull_count)
+            print(bull_count, "bulls", )
+            print(cow_count, "cows", )
             cow_count = 0
             bull_count = 0
