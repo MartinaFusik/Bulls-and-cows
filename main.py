@@ -11,7 +11,7 @@ cara = 47 * "-"
 #Generování tajných číslic
 def generuj_cislo():
     tajne_cislo = range(1000, 10000)
-    unikatni_cislo = random.sample(tajne_cislo, 1)
+    unikatni_cislo = set(random.sample(tajne_cislo, 1))
     return unikatni_cislo
 
 #vstup od uživatele
@@ -25,7 +25,7 @@ def kontrola_vstupu(cisla: str):
     for i in cisla:
         if i not in zkontrolovany_vstup:
             if i.isdigit() == True:
-                var = len(zkontrolovany_vstup) == 4
+                var = len(zkontrolovany_vstup) > 4
                 zkontrolovany_vstup.append(i)
                 if var is False:
                     print("Zadej 4 čísla.")
@@ -75,14 +75,14 @@ def main():
     cara)
     hrac = input("Zadej 4 čísla:")
     pocitac = generuj_cislo()
-    while hrac == pocitac:
-        hrac = input("Zadej 4 čísla:")
-        pocitac = generuj_cislo()
-        porovnavani(hrac, pocitac)
-        bull_cow = porovnavani(hrac, pocitac)
-        print(f"{bull_cow[0]} bulls, {bull_cow[1]} cows")
-        if bull_cow[0] == 4:
-            print("You guessed right!")
+
+    while hrac != pocitac:
+        dalsi_moznost = input(">>>")
+        porovnavani(dalsi_moznost, pocitac)
+        hrajeme(hrac, pocitac)
+        print(f"{dalsi_moznost[0]} bulls, {dalsi_moznost[1]} cows")
+        if hrac == pocitac:
+            print("Vyhrál si!")
 
 
 
