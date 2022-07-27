@@ -8,7 +8,6 @@ import random
 
 cara = 47 * "-"
 
-
 # Generování tajných číslic
 def cislo_generator():
     '''Generování náhodných čísel pro hru bez 0 na začátku a opakujících čísel'''
@@ -25,6 +24,7 @@ def player_input():
         try:
             global player_num
             z = player_num = input("Enter a number:")
+            print(cara)
             z = int(z[0])
             '''Kontrola, zda číslo začíná 0'''
             if z == 0:
@@ -48,39 +48,50 @@ def player_input():
             else:
                 return
 
-def porovnavani(hrac, pocitac):
-    hrac = player_num
-    bull_cow = [0, 0]
-    for i, j in zip(hrac, pocitac):
-        if j in hrac:
-            if j == i:
-                bull_cow[0] += 1
+def num_control(a, b):
+    '''Počítání cows and bulls'''
+    a = str(a)
+    b = str(b)
+    for i in range(0, 4):
+        for j in range(0, 4):
+            if (i == j) and (a[i] == b[j]):
+                global bull_count
+                bull_count += 1
+            elif (i != j) and (a[i] == b[j]):
+                global cow_count
+                cow_count += 1
             else:
-                bull_cow[1] += 1
-    return bull_cow
-
-# Hra začíná - hlavní funkce
-print(
-    "Hi there!", ("\n"),
-    cara, ("\n"),
-    "I've generated a random 4 digit number for you.", ("\n"),
-    "Let's play a bulls and cows game.", ("\n"),
-    cara)
-
-player_num = str(0)
+                pass
+#Hlavní funkce
+# This is the main function
+print("Hi there")
+print(cara)
+print("I've generated a random 4 digit number for you.")
+print("Let's play a bulls and cows game.")
+print(cara)
+player_num = 0
 user_choice = True
 while (user_choice):
     cow_count = 0
     bull_count = 0
-    game_num = generuj_cislo()
+    game_num = cislo_generator()
     print(game_num)
-
+    score_counter = 0
     while (True):
-        kontrola_vstupu()
-        porovnavani(game_num, player_num)
+        player_input()
+        score_counter = score_counter + 1
+        num_control(game_num, player_num)
         if (bull_count == 4):
-            print("YOU WON")
-            print("YOU HAVE COMPLETED THE GAME")
+            print("Skvělé, jsi vítěz!")
+            print("Hru jsi dokončil na", str(score_counter), "pokusů")
+            print("Chceš hrát znovu? Stiskni Y")
+            print("Jestli chceš skončit, stiskni jakoukoli klávesu.")
+            choice = input("Jak si se rozhodl?: ")
+            if (choice == "y"):
+                user_choice = True
+            else:
+                user_choice = False
+            break
         else:
             print("cow_count", cow_count)
             print("bull_count", bull_count)
