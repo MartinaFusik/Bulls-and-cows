@@ -75,7 +75,6 @@ while (user_choice):
     cow_count = 0
     bull_count = 0
     game_num = cislo_generator()
-    print(game_num)
     score_counter = 0
     while (True):
         player_input()
